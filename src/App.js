@@ -1,24 +1,30 @@
-import logo from './logo.svg';
+import { useState } from 'react';
+import { useDispatch, useSelector} from 'react-redux';
+import { increment,decrement,increaseByValue,decreaseByValue } from './store/slices/counterSlice';
+
 import './App.css';
 
 function App() {
+  const [value, setValue] = useState('');
+  const currentState = useSelector((store)=>{return store.counter.value})
+  const dispatch = useDispatch();
+  const handleValue = (e)=>{
+    setValue(e.target.value)
+  }
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <section className='body'>
+    <div><h2>Increment Decrement Using Redux Toolit</h2></div>
+      <div>{"Result :  " + currentState}</div>
+      <div>
+        <button className='incBtn' onClick={()=>{dispatch(increment())}}>Increment (+) </button>
+        <button className='decBtn' onClick={()=>{dispatch(decrement())}}>Decrement (-) </button>
+      </div>
+      <div>
+        <button className='incBtn' onClick={()=>{dispatch(increaseByValue(Number(value)))}}>(+) By Value </button>
+        <input onChange={handleValue} value={value} />
+        <button className='decBtn' onClick={()=>{dispatch(decreaseByValue(Number(value)))}}>(-) By Value </button>
+      </div>
+    </section>
   );
 }
 
